@@ -13,7 +13,6 @@ from tenpy.tools import hdf5_io
 from tenpy.tools.process import memory_usage
 
 tenpy.tools.misc.setup_logging(to_stdout="INFO")
-sys.path.append("../")
 from trimeric_molecule_model import TrimericMoleculeDouble, TrimericMoleculeLinear, TrimericMoleculeParallel, TrimericMoleculeParallelOdd, TrimericMoleculeAlternatedOdd
 
 
@@ -86,7 +85,7 @@ def main(J, J13, Jinter, hz, hx, L, model="linear"):
 
     N = model.lat.N_sites
 
-    with h5py.File(f"../../../NonInteractingGroundState/data_psi_gs-L_{L}_Jint_0.00_hz_0.00.h5", "r") as f:
+    with h5py.File(f"non-interacting/datos/data_psi_parallel-L_{L}_Jint_0.00_hz_0.01hx0.01.h5", "r") as f:
         data_load = hdf5_io.load_from_hdf5(f)
     psi_0 = data_load['psi']
 
@@ -136,11 +135,11 @@ def main(J, J13, Jinter, hz, hx, L, model="linear"):
         "memory_usage": memory_usage(),
     }
 
-    with h5py.File(f"datos/data_{fname}.h5", "w") as f:
+    with h5py.File(f"perpendicular/datos/data_{fname}.h5", "w") as f:
         hdf5_io.save_to_hdf5(f, data)
 
     data = {"psi": psi}
-    with h5py.File(f"datos/data_psi_{fname}.h5", "w") as f:
+    with h5py.File(f"perpendicular/datos/data_psi_{fname}.h5", "w") as f:
         hdf5_io.save_to_hdf5(f, data)
 
 

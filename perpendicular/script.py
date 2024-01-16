@@ -4,11 +4,11 @@ import sys
 sys.path.append("..")
 import perpendicular.base as base
 
-L= sys.argv[1]
+L= float(sys.argv[1])
 inter= float( sys.argv[2] )
 
 hz_list = np.linspace(0.0, 2.0, 31)
-hx_list = np.linspace(0.0, 0.25, 11)
+hx_list = np.linspace(0.0, 0.2, 21)
 hz_list[0] = 0.01
 
 for hx in hz_list:

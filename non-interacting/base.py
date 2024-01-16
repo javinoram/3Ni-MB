@@ -21,11 +21,11 @@ def main(J, J13, Jinter, hz, hx, L, model="linear"):
     # DMRG parameters
     dmrg_params = {
         "mixer": True,  # setting this to True helps to escape local minima
-        "mixer_params": {"amplitude": 0.01, "decay": 2.},
+       # "mixer_params": {"amplitude": 0.01, "decay": 2.},
         
         "max_E_err": 1.0e-12,
         "trunc_params": {
-            "svd_min": 1.0e-10,
+            "svd_min": 1.0e-8,
         },
         "max_sweeps": 36,
         "min_sweeps": 10,
@@ -52,6 +52,8 @@ def main(J, J13, Jinter, hz, hx, L, model="linear"):
 
     if hz == 0.0:
         model_params["hz"] = 1e-6
+
+    print("\n", "***" * 10)
 
     if model == "linear":
         model_params["L"] = 2 * L
@@ -86,9 +88,17 @@ def main(J, J13, Jinter, hz, hx, L, model="linear"):
 
     N = model.lat.N_sites
 
-    with h5py.File(f"../../../NonInteractingGroundState/data_psi_gs-L_{L}_Jint_0.00_hz_0.00.h5", "r") as f:
-        data_load = hdf5_io.load_from_hdf5(f)
-    psi_0 = data_load['psi']
+    # Initial State
+    # this selects a charge sector!
+
+    
+    # p_state = ["up"] * len(model.lat.unit_cell) * (model_params["L"])
+    p_state = ["up"] * N
+    psi_0 = MPS.from_product_state(model.lat.mps_sites(), p_state)
+
+    # shuffle initial state (in case of non-polarized initialization)
+    p_state = random.sample(p_state, len(p_state))
+    psi_0 = MPS.from_product_state(model.lat.mps_sites(), p_state=p_state)
 
     # charge sector is the hilbert space sector with a certain conserved quantity (conserved 'charge')
     # in this case Sz is not conserved so the 'charge' value can change
@@ -136,12 +146,18 @@ def main(J, J13, Jinter, hz, hx, L, model="linear"):
         "memory_usage": memory_usage(),
     }
 
-    with h5py.File(f"datos/data_{fname}.h5", "w") as f:
+    with h5py.File(f"non-interacting/datos/data_{fname}.h5", "w") as f:
         hdf5_io.save_to_hdf5(f, data)
 
     data = {"psi": psi}
-    with h5py.File(f"datos/data_psi_{fname}.h5", "w") as f:
+    with h5py.File(f"non-interacting/datos/data_psi_{fname}.h5", "w") as f:
         hdf5_io.save_to_hdf5(f, data)
+
+    sweep_stats = eng.sweep_stats
+    update_stats = eng.update_stats
+
+    print("\n", "***" * 10)
+    print("Run finished.")
 
 
 if __name__ == "__main__":

@@ -86,7 +86,7 @@ def main(J, J13, Jinter, hz, hx, L, model="linear"):
 
     N = model.lat.N_sites
 
-    with h5py.File(f"../../../NonInteractingGroundState/data_psi_gs-L_{L}_Jint_0.00_hz_0.00.h5", "r") as f:
+    with h5py.File(f"non-interacting/datos/data_psi_alternated-L_{L}_Jint_0.00_hz_0.01hx0.01.h5", "r") as f:
         data_load = hdf5_io.load_from_hdf5(f)
     psi_0 = data_load['psi']
 
@@ -136,11 +136,11 @@ def main(J, J13, Jinter, hz, hx, L, model="linear"):
         "memory_usage": memory_usage(),
     }
 
-    with h5py.File(f"datos/data_{fname}.h5", "w") as f:
+    with h5py.File(f"alternated/datos/data_{fname}.h5", "w") as f:
         hdf5_io.save_to_hdf5(f, data)
 
     data = {"psi": psi}
-    with h5py.File(f"datos/data_psi_{fname}.h5", "w") as f:
+    with h5py.File(f"alternated/datos/data_psi_{fname}.h5", "w") as f:
         hdf5_io.save_to_hdf5(f, data)
 
 
