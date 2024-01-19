@@ -86,7 +86,7 @@ def main(J, J13, Jinter, hz, hx, L, model="linear"):
 
     N = model.lat.N_sites
 
-    with h5py.File(f"non-interacting/datos/data_psi_alternated-L_{L}_Jint_0.00_hz_0.01hx0.01.h5", "r") as f:
+    with h5py.File(f"non-interacting/datos/data_psi_alternated-L_{L}_Jint_0.00_hz_0.01_hx0.01.h5", "r") as f:
         data_load = hdf5_io.load_from_hdf5(f)
     psi_0 = data_load['psi']
 

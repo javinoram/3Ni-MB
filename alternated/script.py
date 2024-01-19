@@ -2,7 +2,7 @@ import numpy as np
 import sys
 
 sys.path.append("..")
-import perpendicular.base as base
+import base as base
 
 L= float(sys.argv[1])
 inter= float( sys.argv[2] )
